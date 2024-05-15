@@ -11,6 +11,7 @@ import Navegacion from './componentes/layout/Navegacion'
 import Clientes from './componentes/clientes/Clientes'
 import Pedidos from './componentes/pedidos/Pedidos'
 import Productos from './componentes/productos/Productos'
+import NuevoCliente from './componentes/clientes/NuevoCliente'
 
 
 function App(){
@@ -27,7 +28,7 @@ function App(){
 
             <Routes>
               <Route path="/" element={<Clientes />} />
-
+              <Route path="/clientes/nuevo" element={<NuevoCliente />} />
               <Route path="/productos" element={<Productos />} />
 
               <Route path="/pedidos" element={<Pedidos />} />

@@ -3,6 +3,9 @@ import React, { useEffect, useState, Fragment } from 'react';
 // cliente AXIOS
 import clienteAxios from '../../config/axios';
 
+import Cliente from './Cliente';
+
+import { Link } from 'react-router-dom';
 
 function Clientes() {
 
@@ -24,10 +27,19 @@ function Clientes() {
     return(
         <Fragment>
             <h1>Clientes</h1>  
+
+            <Link to={"/clientes/nuevo"} className="btn btn-verde nvo-cliente">
+                 <i class="fas fa-plus-circle"></i>
+                Nuevo Cliente
+            </Link>
+
             <ul className='listado-clientes'>
-                {clientes.map(cliente => {
-                    console.log(cliente);
-                })}
+                {clientes.map(cliente => (
+                    <Cliente
+                    key={cliente._id}
+                        cliente={cliente} /* Props- para pasar registros a Cliente.js*/
+                    />
+                ))}
             </ul>
         </Fragment>
     );
