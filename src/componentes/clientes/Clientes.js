@@ -29,7 +29,7 @@ function Clientes() {
             <h1>Clientes</h1>  
 
             <Link to={"/clientes/nuevo"} className="btn btn-verde nvo-cliente">
-                 <i class="fas fa-plus-circle"></i>
+                 <i className="fas fa-plus-circle"></i>
                 Nuevo Cliente
             </Link>
 

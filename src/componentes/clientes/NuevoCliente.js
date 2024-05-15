@@ -1,7 +1,18 @@
 import React, {Fragment, useState} from 'react';
 import clienteAxios from '../../config/axios';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-function NuevoCliente(){
+
+// history es el que permite redireccionar
+function NuevoCliente({history}){
+    // código para redireccionar
+    const navigate = useNavigate(); 
+
+    function handleButtonClick() {
+        navigate('/');
+    }
+
     /* almacenar cliente en el state.
     cliente = state, guardarCliente= funcion para guardar el state*/
     const[cliente, guardarCliente] = useState ({
@@ -42,11 +53,24 @@ function NuevoCliente(){
             // validar si retorna errores de Mongo
             if(res.data.code == 11000){
                 console.log('Error de duplicado')
+                Swal.fire({
+                    type: 'error',
+                    title: 'Hubo un error',
+                    text: 'Ese correo ya está registrado',
+                    icon: 'error'
+                });
             }else{
                 console.log(res.data);
+
+                Swal.fire({
+                    title: 'Se agregó el Cliente',
+                    text: res.data.mensaje,
+                    icon: 'success'
+                });
             }
 
             // Redireccionar
+            handleButtonClick();
         });
     }
 
@@ -114,6 +138,5 @@ function NuevoCliente(){
         </Fragment>
     )
 }
-
 
 export default NuevoCliente;
