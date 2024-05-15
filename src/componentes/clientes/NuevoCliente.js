@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-
+import clienteAxios from '../../config/axios';
 
 function NuevoCliente(){
     /* almacenar cliente en el state.
@@ -22,11 +22,39 @@ function NuevoCliente(){
         })
     }
 
+    // Validar el formulario
+    const validarCliente = () => {
+        // Destructuring del state
+        const { nombre, apellido, email, empresa, telefono } = cliente;
+        
+        // revisar que las propiedades del state tengan contenido
+        let valido = !nombre.length || !apellido.length || !email.length || !empresa.length || !telefono.length;
+
+        return valido;
+    }
+
+    // Añade en la REST API un nuevo cliente
+    const agregarCliente = e => {
+        e.preventDefault();
+
+        // enviar petición AXIOS; retorna Promesa
+        clienteAxios.post('/clientes', cliente).then(res => {
+            // validar si retorna errores de Mongo
+            if(res.data.code == 11000){
+                console.log('Error de duplicado')
+            }else{
+                console.log(res.data);
+            }
+
+            // Redireccionar
+        });
+    }
+
     return(
         <Fragment>
             <h2>Nuevo Cliente</h2>
             
-            <form>
+            <form onSubmit={ agregarCliente } >
                 <legend>Llena todos los campos</legend>
 
                 <div className="campo">
@@ -67,7 +95,7 @@ function NuevoCliente(){
 
                 <div className="campo">
                     <label>Teléfono:</label>
-                    <input  type="email"
+                    <input  type="number"
                             placeholder="Teléfono Cliente" 
                             name="telefono"
                             onChange={actualizarState}
@@ -78,6 +106,7 @@ function NuevoCliente(){
                     <input  type="submit" 
                             className="btn btn-azul" 
                             value="Agregar Cliente"
+                            disabled={ validarCliente() }
                     />
                 </div>
 
