@@ -1,4 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import Spinner from '../layout/Spinner';
 
 // cliente AXIOS
 import clienteAxios from '../../config/axios';
@@ -23,6 +24,9 @@ function Clientes() {
         consultarAPI();
     }, [] );
 
+
+    // Spinner de carga
+    if(!clientes.length) return <Spinner />
 
     return(
         <Fragment>
