@@ -12,6 +12,7 @@ import Clientes from './componentes/clientes/Clientes'
 import Pedidos from './componentes/pedidos/Pedidos'
 import Productos from './componentes/productos/Productos'
 import NuevoCliente from './componentes/clientes/NuevoCliente'
+import EditarCliente from './componentes/clientes/EditarCliente'
 
 
 function App(){
@@ -30,6 +31,7 @@ function App(){
               <Route path="/" element={<Clientes />} />
               <Route path="/clientes/nuevo" element={<NuevoCliente />} />
               <Route path="/productos" element={<Productos />} />
+              <Route path="/clientes/editar/:idCliente" element={<EditarCliente />} />
 
               <Route path="/pedidos" element={<Pedidos />} />
 
