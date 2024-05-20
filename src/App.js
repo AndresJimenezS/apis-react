@@ -9,7 +9,6 @@ import Navegacion from './componentes/layout/Navegacion'
 
 /* Componentes */
 import Clientes from './componentes/clientes/Clientes'
-import Pedidos from './componentes/pedidos/Pedidos'
 import NuevoCliente from './componentes/clientes/NuevoCliente'
 import EditarCliente from './componentes/clientes/EditarCliente'
 
@@ -17,6 +16,8 @@ import Productos from './componentes/productos/Productos'
 import EditarProducto from './componentes/productos/EditarProducto'
 import NuevoProducto from './componentes/productos/NuevoProducto'
 
+import Pedidos from './componentes/pedidos/Pedidos'
+import NuevoPedido from './componentes/pedidos/NuevoPedido'
 
 
 
@@ -42,6 +43,8 @@ function App(){
               <Route path="/productos/editar/:idProducto" element={<EditarProducto />} />
 
               <Route path="/pedidos" element={<Pedidos />} />
+              <Route path="/pedidos/nuevo/:id" element={<NuevoPedido />} />
+
 
             </Routes>
           </main>
