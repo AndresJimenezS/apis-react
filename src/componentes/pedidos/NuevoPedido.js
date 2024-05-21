@@ -8,7 +8,14 @@ import FormCantidadProducto from './FormCantidadProducto';
 import Swal from 'sweetalert2';
 
 
-function NuevoPedido(){
+function NuevoPedido(props){
+    // código para redireccionar
+    const navigate = useNavigate(); 
+
+    function handleButtonClick() {
+        navigate('/pedidos');
+    }
+
     // Obtener el ID de params
     const { id } = useParams();
 
@@ -112,6 +119,44 @@ function NuevoPedido(){
         guardarProductos(todosProductos);
     }
 
+    // Almacena el pedido en BD
+    const realizarPedido = async e => {
+        e.preventDefault();
+
+        //Construir pedido 
+        const pedido ={
+            "cliente" : id,
+            "pedido" : productos,
+            "total" : total
+        }
+
+        // almacenarlo en base de datos
+        const resultado = await clienteAxios.post(`/pedidos/nuevo/${id}`, pedido);
+
+        // leer resultado
+        if(resultado.status === 200){
+            // alerta de éxito
+            Swal.fire({
+                type: 'success',
+                title: 'Correcto',
+                text: resultado.data.mensaje,
+                icon: 'success'
+            });
+        }else{
+            //alerta de error
+            Swal.fire({
+                type: 'error',
+                title: 'Hubo un error',
+                text: 'Vuelva a intentarlo',
+                icon: 'error'
+            });
+        }
+
+        // Redireccionar
+        handleButtonClick();
+        
+    }
+
     return(
         <Fragment>
             <h2>Nuevo Pedido</h2>
@@ -143,7 +188,9 @@ function NuevoPedido(){
 
                 {
                     total > 0 ? (
-                        <form >
+                        <form 
+                            onSubmit={realizarPedido}
+                        >
                             <input  type="submit"
                                     className='btn btn-verde btn-block'
                                     value="Realizar Pedido"
