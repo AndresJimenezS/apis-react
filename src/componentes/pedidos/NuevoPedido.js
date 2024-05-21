@@ -16,7 +16,8 @@ function NuevoPedido(){
     const [cliente, guardarCliente] = useState({});
     const [busqueda, guardarBusqueda] = useState('');
     const [productos, guardarProductos] = useState([]);
-    
+    const [total, guardarTotal] = useState(0);
+
     useEffect(() => {
         const consultarAPI = async () => {
             const resultado = await clienteAxios.get(`/clientes/${id}`);
@@ -25,7 +26,10 @@ function NuevoPedido(){
 
         // llamar funcion
         consultarAPI();
-    })
+
+        // actualizar el total a pagar
+        actualizarTotal();
+    }, [productos])
 
     const buscarProducto = async e => {
         e.preventDefault();
@@ -46,7 +50,6 @@ function NuevoPedido(){
         }else{
             // si no hay resultados  una alerta
             Swal.fire({
-                type: 'error',
                 icon: "warning",
                 title: 'Producto no encontrado',
                 text: 'No hay resultados'
@@ -85,6 +88,29 @@ function NuevoPedido(){
         guardarProductos(todosProductos);
     }
 
+    // Actualizar el total a pagar
+    const actualizarTotal = () => {
+        // si el arreglo de productos es igual a 0. el total es 0
+        if(productos.length === 0){
+            guardarTotal(0);
+            return;
+        }
+
+        // calcular nuevo total
+        let nuevoTotal = 0;
+        //recorrer productos
+        productos.map(producto => nuevoTotal += (producto.cantidad * producto.precio));
+
+        // almacenar el total
+        guardarTotal(nuevoTotal);
+    }
+
+    // Elimina un producto del state
+    const eliminarProductoPedido = id => {
+        // quita del arreglo el producto igual y retorna/mantiene los demás(por eso busca los diferentes)
+        const todosProductos = productos.filter(producto => producto.producto !== id);
+        guardarProductos(todosProductos);
+    }
 
     return(
         <Fragment>
@@ -107,18 +133,23 @@ function NuevoPedido(){
                             producto={producto}
                             restarProductos={restarProductos}
                             aumentarProductos={aumentarProductos}
+                            eliminarProductoPedido={eliminarProductoPedido}
                             index={index}
                         />
                     ))}
                 </ul>
 
-                <div className="campo">
-                    <label>Total:</label>
-                    <input type="number" name="precio" placeholder="Precio" readonly="readonly" />
-                </div>
-                <div className="enviar">
-                    <input type="submit" className="btn btn-azul" value="Agregar Pedido"/>
-                </div>
+                <p className='total'>Total a Pagar: <span>${total}</span></p>
+
+                {
+                    total > 0 ? (
+                        <form >
+                            <input  type="submit"
+                                    className='btn btn-verde btn-block'
+                                    value="Realizar Pedido"
+                            />
+                        </form>
+                    ) : null}
         </Fragment>
     )
 }
