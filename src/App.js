@@ -19,6 +19,8 @@ import NuevoProducto from './componentes/productos/NuevoProducto'
 import Pedidos from './componentes/pedidos/Pedidos'
 import NuevoPedido from './componentes/pedidos/NuevoPedido'
 
+import Login from './componentes/auth/Login'
+
 
 
 function App(){
@@ -45,6 +47,7 @@ function App(){
               <Route path="/pedidos" element={<Pedidos />} />
               <Route path="/pedidos/nuevo/:id" element={<NuevoPedido />} />
 
+              <Route path="/iniciar-sesion" element={<Login />} /> 
 
             </Routes>
           </main>
