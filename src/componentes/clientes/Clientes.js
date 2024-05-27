@@ -28,7 +28,6 @@ function Clientes() {
     const [ auth, guardarAuth ] = useContext(CRMContext);
     
    
-
     // useEffect es similar a componentdidmount y willmount
     useEffect( () => {
 
@@ -46,7 +45,7 @@ function Clientes() {
                     guardarClientes(clientesConsulta.data);
                 } catch (error) {
                     // Error con autorizacion
-                    if(error.response.status = 500){
+                    if(error.response.status === 500){
                         // Redireccionar
                         handleButtonClick();
                     }
