@@ -1,7 +1,8 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useContext} from 'react';
 import clienteAxios from '../../config/axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { CRMContext } from '../../context/CRMContext';
 
 
 // history es el que permite redireccionar
@@ -12,6 +13,12 @@ function NuevoCliente({history}){
     function handleButtonClick() {
         navigate('/');
     }
+    function handleButtonClickI() {
+        navigate('/iniciar-sesion');
+    }
+
+    // utilizar valores del context
+    const [ auth, guardarAuth ] = useContext(CRMContext);
 
     /* almacenar cliente en el state.
     cliente = state, guardarCliente= funcion para guardar el state*/
@@ -72,6 +79,12 @@ function NuevoCliente({history}){
             // Redireccionar
             handleButtonClick();
         });
+    }
+
+    // Verificar si el usuario está autenticado o no
+    if(!auth.auth && (localStorage.getItem('token') === auth.token )) {
+        // Redireccionar
+        handleButtonClickI();
     }
 
     return(
