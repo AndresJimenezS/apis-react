@@ -1,10 +1,16 @@
-import React, {useState} from "react"; 
+import React, {useContext, useState} from "react"; 
 import clienteAxios from "../../config/axios";
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 
+// Context
+import { CRMContext } from "../../context/CRMContext";
+
 
 function Login(){
+
+    // Auth y token
+    const [ auth, guardarAuth ] = useContext(CRMContext);
 
     // código para redireccionar
     const navigate = useNavigate(); 
@@ -36,6 +42,14 @@ function Login(){
             // extraer el token y guardarlo en LocalStorage{es un lugar seguro para guardarlo}
             const { token } = respuesta.data;
             localStorage.setItem('token', token);
+
+            // colocarlo en el state (token)
+            guardarAuth({
+                token: token,
+                auth: true
+            });
+
+            console.log('Auth after login:', { token: token, auth: true });
 
             // alerta
             Swal.fire({

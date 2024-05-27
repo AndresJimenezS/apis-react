@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, useContext } from 'react';
 import Spinner from '../layout/Spinner';
 
 // cliente AXIOS
@@ -6,24 +6,65 @@ import clienteAxios from '../../config/axios';
 
 import Cliente from './Cliente';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { CRMContext } from '../../context/CRMContext';
+
+
 
 function Clientes() {
+
+    // código para redireccionar
+    const navigate = useNavigate(); 
+
+    function handleButtonClick() {
+        navigate('/iniciar-sesion');
+    }
 
     // Trabajar con el state (clientes = state) (guardarClientes = funcion para guardar el state)
     const [clientes, guardarClientes] = useState([]); //[] es el valor inicial
 
-    // Query a la API
-    const consultarAPI = async () => {
-        const clientesConsulta = await clienteAxios.get('/clientes');
-        guardarClientes(clientesConsulta.data);
-    }
+    // utilizar valores del context
+    const [ auth, guardarAuth ] = useContext(CRMContext);
+    
+   
 
     // useEffect es similar a componentdidmount y willmount
     useEffect( () => {
-        consultarAPI();
+
+        if(auth.token !== ''){
+            // Query a la API
+            const consultarAPI = async () => {  
+                try {
+                    const clientesConsulta = await clienteAxios.get('/clientes', {
+                        headers: {
+                            Authorization : `Bearer ${auth.token}`
+                        }
+                    });
+        
+                    // colocar el resultado en el state
+                    guardarClientes(clientesConsulta.data);
+                } catch (error) {
+                    // Error con autorizacion
+                    if(error.response.status = 500){
+                        // Redireccionar
+                        handleButtonClick();
+                    }
+                }
+            }
+        
+            consultarAPI();
+        }else{
+           // Redireccionar
+           handleButtonClick();
+        }
+
     }, [] );
 
+
+    if(!auth.auth){
+        handleButtonClick();
+    }
 
     // Spinner de carga
     if(!clientes.length) return <Spinner />
